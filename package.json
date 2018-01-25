@@ -1,0 +1,35 @@
+{
+  "name": "@livechat/agent-app-widget-sdk",
+  "version": "1.2.1",
+  "description": "SDK for LiveChat inapp widget API",
+  "main": "dist/agentapp-widget.js",
+  "scripts": {
+    "build:umd:min":
+    "cross-env BABEL_ENV=es NODE_ENV=production rollup -c -i src/index.js -o dist/agentapp-widget.min.js",
+    "build:umd":
+    "cross-env BABEL_ENV=es NODE_ENV=development rollup -c -i src/index.js -o dist/agentapp-widget.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/livechat/agentapp-widget-sdk.git"
+  },
+  "contributors": [
+    "Bartosz Olchowka <b.olchowka@livechatinc.com>",
+    "Jedrzej Bogacki <j.bogacki@livechatinc.com>"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/livechat/agentapp-widget-sdk/issues"
+  },
+  "homepage": "https://github.com/livechat/agentapp-widget-sdk#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "cross-env": "^5.1.3",
+    "rollup": "^0.55.0",
+    "rollup-plugin-babel": "^3.0.3",
+    "rollup-plugin-commonjs": "^8.2.6",
+    "rollup-plugin-uglify": "^3.0.0"
+  }
+}
