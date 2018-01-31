@@ -1,6 +1,6 @@
 {
   "name": "@livechat/agent-app-widget-sdk",
-  "version": "1.2.2",
+  "version": "1.2.6",
   "description": "SDK for LiveChat inapp widget API",
   "main": "dist/agentapp-widget.cjs.js",
   "module": "dist/agentapp-widget.es.js",
