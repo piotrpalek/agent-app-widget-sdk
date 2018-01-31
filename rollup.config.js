@@ -1,34 +1,23 @@
-import commonjs from 'rollup-plugin-commonjs'
-import babel from 'rollup-plugin-babel'
-import uglify from 'rollup-plugin-uglify'
-
-const env = process.env.NODE_ENV
+import babel from 'rollup-plugin-babel';
+import pkg from './package.json';
 
 const config = {
-	output: {
-		format: 'umd',
-		name: 'AgentAppWidgetSDK',
-		exports: 'named',
-	},
-	plugins: [
-		babel({
-			exclude: 'node_modules/**',
-		}),
-		commonjs(),
-	],
-}
+  input: './src/index.js',
+  output: [
+    {
+      format: 'es',
+      file: pkg.module
+    },
+    {
+      format: 'cjs',
+      file: pkg.main
+    }
+  ],
+  plugins: [
+    babel({
+      exclude: 'node_modules/**'
+    })
+  ]
+};
 
-if (env === 'production') {
-	config.plugins.push(
-		uglify({
-			compress: {
-				pure_getters: true,
-				unsafe: true,
-				unsafe_comps: true,
-				warnings: false,
-			},
-		})
-	)
-}
-
-export default config
+export default config;
