@@ -111,5 +111,13 @@ export default {
 
   putMessage(message) {
     return sendMessage({ message: 'put_message', data: message });
+  },
+
+  sendQuickReplies(title, buttons) {
+    return sendMessage({ message: 'send_quick_replies', data: { title, buttons }  });
+  },
+
+  sendCards(cards) {
+    return sendMessage({ message: 'send_cards', data: Array.isArray(cards) ? cards : [cards] });
   }
 };
