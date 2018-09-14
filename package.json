@@ -6,7 +6,8 @@
   "module": "dist/agentapp-widget.es.js",
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "rollup -c"
+    "build": "rollup -c",
+    "prepare": "npm run build"
   },
   "repository": {
     "type": "git",
