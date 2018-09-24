@@ -19,6 +19,16 @@ const sendMessage = function(message) {
   return parent.postMessage(e, config.targetOrigin || '*');
 };
 
+const getCustomMessageListener = (actionName = '', callback = () => {}) => (e) => {
+  if (['http://my.lc:3000', 'https://my.labs.livechatinc.com', 'https://my.staging.livechatinc.com', 'https://my.livechatinc.com'].indexOf(e.origin) === -1) {
+    console.log('incorrect origin');
+    return false;
+  } else if (e.data.event_name === 'livechat:' + actionName) {
+    callback(e.data.event_data);
+    window.removeEventListener('message', customMessageListener);
+  }
+}
+
 const messagesListener = e => {
   if (
     [
@@ -113,11 +123,15 @@ export default {
     return sendMessage({ message: 'put_message', data: message });
   },
 
-  sendQuickReplies(title, buttons) {
+  async sendQuickReplies(title, buttons = [], callback = () => {}) {
     return sendMessage({ message: 'send_quick_replies', data: { title, buttons }  });
+
+    window.addEventListener('message', getCustomMessageListener('send_quick_replies_response', callback));
   },
 
-  sendCards(cards) {
+  async sendCards(cards, callback = () => {}) {
     return sendMessage({ message: 'send_cards', data: Array.isArray(cards) ? cards : [cards] });
+
+    window.addEventListener('message', getCustomMessageListener('send_cards_response', callback));
   }
 };
