@@ -1,16 +1,16 @@
 {
   "name": "@livechat/agent-app-widget-sdk",
   "version": "1.4.0",
-  "description": "SDK for LiveChat inapp widget API",
-  "main": "dist/agentapp-widget.cjs.js",
-  "module": "dist/agentapp-widget.es.js",
+  "description": "SDK for LiveChat Agent App Widgets",
+  "main": "dist/agent-app-widget.cjs.js",
+  "module": "dist/agent-app-widget.es.js",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "rollup -c"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/livechat/agentapp-widget-sdk.git"
+    "url": "git+https://github.com/livechat/agent-app-widget-sdk.git"
   },
   "files": [
     "dist"
@@ -21,9 +21,9 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/livechat/agentapp-widget-sdk/issues"
+    "url": "https://github.com/livechat/agent-app-widget-sdk/issues"
   },
-  "homepage": "https://github.com/livechat/agentapp-widget-sdk#readme",
+  "homepage": "https://github.com/livechat/agent-app-widget-sdk#readme",
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
