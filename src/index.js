@@ -22,6 +22,7 @@ const sendMessage = function(message) {
 const messagesListener = e => {
   if (
     [
+      'http://localhost:3000',
       'http://my.lc:3000',
       'https://my.labs.livechatinc.com',
       'https://my.staging.livechatinc.com',
