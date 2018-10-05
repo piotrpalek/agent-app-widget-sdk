@@ -1,91 +1,79 @@
-const config = {};
-let sessionId = null;
-let pluginId = null;
+import { getUrlParam } from './utils/url';
 
-// callbacks
-const callbacks = {};
-
-const setPluginId = function() {
-  if (!pluginId) {
-    pluginId = getUrlParam('plugin_id');
-  }
-  return pluginId;
-};
-
-// sending postMessage messages
-const sendMessage = function(message) {
-  const e = message;
-  e.plugin_id = setPluginId();
-  return parent.postMessage(e, config.targetOrigin || '*');
-};
-
-const messagesListener = e => {
-  if (
-    [
+class WidgetSDK {
+  constructor() {
+    this.callbacks = {};
+    this.pluginId = null;
+    this.postMessageOriginsWhitelist = [
       'http://localhost:3000',
       'http://my.lc:3000',
       'https://my.labs.livechatinc.com',
       'https://my.staging.livechatinc.com',
       'https://my.livechatinc.com'
-    ].indexOf(e.origin) === -1
-  ) {
-    console.log('incorrect origin');
-    return false;
+    ];
+
+    window.addEventListener('message', this.receiveMessage.bind(this));
   }
 
-  switch (e.data.event_name) {
-    case 'livechat:customer_profile':
-      if (!callbacks['customer_profile']) {
-        return false;
-      }
+  getPluginId() {
+    if (!this.pluginId) {
+      this.pluginId = getUrlParam('plugin_id');
+    }
+    this.pluginId;
+  };
 
-      return (() => {
-        const result = [];
-        for (let callback of callbacks['customer_profile']) {
-          result.push(callback(e.data.event_data));
+  addCallback(method, callback) {
+    if (!this.callbacks[method]) {
+      this.callbacks[method] = [];
+    }
+    this.callbacks[method].push(callback);
+  }
+
+  sendMessage(message) {
+    const e = message;
+    e.plugin_id = this.getPluginId();
+    window.parent.postMessage(e, '*');
+  };
+
+  receiveMessage(e) {
+    if (this.postMessageOriginsWhitelist.indexOf(e.origin) === -1) {
+      console.log('incorrect origin');
+      return false;
+    }
+
+    switch (e.data.event_name) {
+      case 'livechat:customer_profile':
+        if (!this.callbacks['customer_profile']) {
+          return false;
         }
-        return result;
-      })();
+        this.callbacks['customer_profile'].forEach(callback => {
+          callback(e.data.event_data);
+        });
+        break;
 
-    case 'livechat:customer_profile_hidden':
-      if (!callbacks['customer_profile_hidden']) {
-        return false;
-      }
-
-      return (() => {
-        const result1 = [];
-        for (let callback of callbacks['customer_profile_hidden']) {
-          result1.push(callback(e.data.event_data));
+      case 'livechat:customer_profile_hidden':
+        if (!this.callbacks['customer_profile_hidden']) {
+          return false;
         }
-        return result1;
-      })();
+        this.callbacks['customer_profile_hidden'].forEach(callback => {
+          callback(e.data.event_data);
+        });
+        break;
+    }
   }
 };
-// receiving postMessage messages
 
-const getUrlParam = name => {
-  const results = new RegExp(`[\?&]${name}=([^&#]*)`).exec(
-    window.location.href
-  );
-  if (results) {
-    return results[1] || 0;
-  } else {
-    return null;
-  }
-};
+const SDK = new WidgetSDK();
 
 export default {
   init() {
-    sendMessage({ message: 'plugin_inited' });
-    window.addEventListener('message', messagesListener);
+    SDK.sendMessage({
+      message: 'plugin_inited'
+    });
   },
 
   on(method, callback) {
-    if (!callbacks[method]) {
-      callbacks[method] = [];
-    }
-
-    return callbacks[method].push(callback);
+    SDK.addCallback(method, callback);
   },
 
   track(eventName = '', eventProperties = {}) {
@@ -93,7 +81,7 @@ export default {
       return false;
     }
 
-    return sendMessage({
+    SDK.sendMessage({
       message: 'track',
       data: {
         event_name: eventName,
@@ -102,15 +90,10 @@ export default {
     });
   },
 
-  refreshSessionId() {
-    return sendMessage({ message: 'plugin_loaded' });
-  },
-
-  getSessionId() {
-    return sessionId;
-  },
-
   putMessage(message) {
-    return sendMessage({ message: 'put_message', data: message });
+    SDK.sendMessage({
+      message: 'put_message',
+      data: message
+    });
   }
 };
