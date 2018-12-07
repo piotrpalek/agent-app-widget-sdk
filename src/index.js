@@ -58,6 +58,19 @@ const messagesListener = e => {
         }
         return result1;
       })();
+
+    case 'livechat:message':
+      if(!callbacks['message']) {
+        return false;
+      }
+
+      return(() => {
+        const result = [];
+        for (let callback of callbacks['message']) {
+          result.push(callback(e.data.event_data));
+        }
+        return result;
+      })();
   }
 };
 // receiving postMessage messages
@@ -111,5 +124,9 @@ export default {
 
   putMessage(message) {
     return sendMessage({ message: 'put_message', data: message });
+  },
+
+  watchMessages() {
+    return sendMessage({ message: 'watch_messages' });
   }
 };
