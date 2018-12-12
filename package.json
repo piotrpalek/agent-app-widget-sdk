@@ -25,11 +25,18 @@
   },
   "homepage": "https://github.com/livechat/agentapp-widget-sdk#readme",
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-stage-3": "^6.24.1",
+    "@babel/cli": "^7.1.5",
+    "@babel/core": "^7.1.5",
+    "@babel/plugin-transform-modules-commonjs": "^7.1.0",
+    "@babel/preset-env": "^7.1.5",
+    "@babel/preset-stage-3": "^7.0.0",
     "rimraf": "^2.6.2",
-    "rollup": "^0.55.0",
-    "rollup-plugin-babel": "^3.0.3"
+    "rollup": "^0.67.0",
+    "rollup-plugin-babel": "^4.0.3",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-node-resolve": "^3.4.0"
+  },
+  "dependencies": {
+    "@livechat/postmessage": "0.0.10"
   }
 }

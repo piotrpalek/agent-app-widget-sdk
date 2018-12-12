@@ -14,7 +14,7 @@ Initialization
 ```
 import LiveChat from '@livechat/agent-app-widget-sdk';
 
-LiveChat.init();
+await LiveChat.init();
 ```
 
 
