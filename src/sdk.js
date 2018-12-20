@@ -1,20 +1,24 @@
+import mitt from 'mitt';
 import { createConnection } from './connection';
 import { createMessageHandler } from './message-handler';
-import { getQueryParam } from './helpers';
+import { createComponentProcessor } from './customer-details';
 
 export function createSdk() {
   const initMessage = 'plugin_inited';
-  const callbacks = {};
   let connection;
   let initialized = false;
   let initializer;
+
+  const eventEmitter = mitt();
+  const handleMessage = createMessageHandler({ eventEmitter });
+  const processCustomerDetailsComponents = createComponentProcessor();
 
   const getConnection = () => {
     if (connection) {
       return Promise.resolve(connection);
     }
 
-    return createConnection(createMessageHandler(callbacks)).then(
+    return createConnection({ handleMessage }).then(
       _connection => (connection = _connection)
     );
   };
@@ -30,13 +34,9 @@ export function createSdk() {
       return initializer;
     },
 
-    on(method, callback) {
-      if (!callbacks[method]) {
-        callbacks[method] = [];
-      }
+    on: eventEmitter.on,
 
-      return callbacks[method].push(callback);
-    },
+    off: eventEmitter.off,
 
     track(eventName = '', eventProperties = {}) {
       if (
@@ -66,6 +66,32 @@ export function createSdk() {
 
     watchMessages() {
       return this._sendMessage('watch_messages');
+    },
+
+    modifyCustomerDetailsSection(section) {
+      if (!section) {
+        throw new Error('You need to provide a section defintion');
+      }
+
+      const { title, imgUrl, components } = section;
+
+      if (!title) {
+        throw new Error(
+          `You need to provide a title for the new section using the 'title' property`
+        );
+      }
+
+      if (!Array.isArray(components) || !components.length) {
+        throw new Error(
+          `You need to provide an array of component definitions for your section using the 'components' property`
+        );
+      }
+
+      return this._sendMessage('customer_details_section', {
+        title,
+        imgUrl,
+        components: processCustomerDetailsComponents(components)
+      });
     },
 
     _sendMessage(message, data = null) {

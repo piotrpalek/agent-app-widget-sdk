@@ -1,7 +1,7 @@
 import { connectToParent } from '@livechat/postmessage';
 import { getQueryParam } from './helpers';
 
-export function createConnection(handleMessage) {
+export function createConnection({ handleMessage }) {
   const pluginId = getQueryParam('plugin_id');
   const usePlainConnection = getQueryParam('connection') === 'plain';
 

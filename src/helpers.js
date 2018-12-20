@@ -12,3 +12,5 @@ export const getQueryParam = name => {
   const queryParams = getQueryParams();
   return queryParams[name] !== undefined ? queryParams[name] : null;
 };
+
+export const pipe = (...fns) => x => fns.reduce((v, fn) => fn(v), x);

@@ -37,6 +37,7 @@
     "rollup-plugin-node-resolve": "^3.4.0"
   },
   "dependencies": {
-    "@livechat/postmessage": "0.0.10"
+    "@livechat/postmessage": "0.0.10",
+    "mitt": "^1.1.3"
   }
 }
