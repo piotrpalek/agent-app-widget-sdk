@@ -4,6 +4,7 @@
   "description": "SDK for LiveChat inapp widget API",
   "main": "dist/agentapp-widget.cjs.js",
   "module": "dist/agentapp-widget.es.js",
+  "unpkg": "dist/agentapp-widget.umd.min.js",
   "scripts": {
     "prebuild": "rimraf dist",
     "prepare": "npm run build",
@@ -29,15 +30,19 @@
     "@babel/cli": "^7.1.5",
     "@babel/core": "^7.1.5",
     "@babel/plugin-transform-modules-commonjs": "^7.1.0",
+    "@babel/plugin-transform-runtime": "^7.2.0",
     "@babel/preset-env": "^7.1.5",
     "@babel/preset-stage-3": "^7.0.0",
     "rimraf": "^2.6.2",
     "rollup": "^0.67.0",
     "rollup-plugin-babel": "^4.0.3",
     "rollup-plugin-commonjs": "^9.2.0",
-    "rollup-plugin-node-resolve": "^3.4.0"
+    "rollup-plugin-node-resolve": "^3.4.0",
+    "rollup-plugin-replace": "^2.1.0",
+    "rollup-plugin-uglify": "^6.0.1"
   },
   "dependencies": {
+    "@babel/runtime": "^7.2.0",
     "@livechat/postmessage": "0.0.10",
     "mitt": "^1.1.3"
   }
