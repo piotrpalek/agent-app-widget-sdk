@@ -21,7 +21,7 @@ const babelConfig = {
   babelrc: false,
   configFile: false,
   runtimeHelpers: true,
-  exclude: /node_modules\/(!callbag-)/,
+  exclude: /node_modules\/(?!callbag-)/,
   ...require('./babel.config.js')
 }
 
