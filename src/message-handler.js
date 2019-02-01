@@ -20,6 +20,10 @@ export function createMessageHandler({ eventEmitter }) {
       case 'livechat:customer_details_section_button_click':
         eventEmitter.emit('customer_details_section_button_click', message.event_data);
         break;
+
+      case 'livechat:textarea_change':
+        eventEmitter.emit('textarea_change', message.event_data);
+        break;
     }
   };
 }
